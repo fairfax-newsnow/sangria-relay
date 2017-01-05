@@ -34,13 +34,14 @@ object Connection {
 
   def definition[Ctx, Conn[_], Val](
     name: String,
-    nodeType: OutputType[Val],
+    nodeType: => OutputType[Val],
     edgeFields: ⇒ List[Field[Ctx, Edge[Val]]] = Nil,
     connectionFields: ⇒ List[Field[Ctx, Conn[Val]]] = Nil
-  )(implicit connEv: ConnectionLike[Conn, Val], classEv: ClassTag[Conn[Val]]) = {
-    if (!isValidNodeType(nodeType))
-      throw new IllegalArgumentException("Node type is invalid. It must be either a Scalar, Enum, Object, Interface, Union, " +
-          "or a Non‐Null wrapper around one of those types. Notably, this field cannot return a list.")
+  )(implicit connEv: ConnectionLike[Conn, Val], classEv: ClassTag[Conn[Val]]): ConnectionDefinition[Ctx, Conn[Val], Val] = {
+    // TODO think about how to statically type check this
+//    if (!isValidNodeType(nodeType))
+//      throw new IllegalArgumentException("Node type is invalid. It must be either a Scalar, Enum, Object, Interface, Union, " +
+//          "or a Non‐Null wrapper around one of those types. Notably, this field cannot return a list.")
 
     val edgeType = ObjectType[Ctx, Edge[Val]](name + "Edge", "An edge in a connection.",
       () ⇒ {
