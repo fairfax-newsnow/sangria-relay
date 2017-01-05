@@ -34,7 +34,7 @@ object Connection {
 
   def definition[Ctx, Conn[_], Val](
     name: String,
-    nodeType: => OutputType[Val],
+    nodeType: ⇒ OutputType[Val],
     edgeFields: ⇒ List[Field[Ctx, Edge[Val]]] = Nil,
     connectionFields: ⇒ List[Field[Ctx, Conn[Val]]] = Nil
   )(implicit connEv: ConnectionLike[Conn, Val], classEv: ClassTag[Conn[Val]]): ConnectionDefinition[Ctx, Conn[Val], Val] = {
